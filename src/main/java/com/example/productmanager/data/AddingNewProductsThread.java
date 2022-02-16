@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddingNewProductsTread extends Thread {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddingNewProductsTread.class);
+public class AddingNewProductsThread extends Thread {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddingNewProductsThread.class);
     private final int pause = 300_000;
 
     @Autowired
