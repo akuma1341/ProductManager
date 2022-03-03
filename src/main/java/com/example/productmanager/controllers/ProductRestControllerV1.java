@@ -5,7 +5,7 @@ import com.example.productmanager.entities.Retailer;
 import com.example.productmanager.services.ProductCRUDService;
 import com.example.productmanager.services.ProductDataService;
 import com.example.productmanager.services.RetailerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products/")
+@AllArgsConstructor
 public class ProductRestControllerV1 {
-    @Autowired
-    private ProductCRUDService productCRUDService;
+    private final ProductCRUDService productCRUDService;
+    private final ProductDataService productDataService;
+    private final RetailerService retailerService;
 
-    @Autowired
-    ProductDataService productDataService;
 
-    @Autowired
-    private RetailerService retailerService;
-
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = this.productCRUDService.getAll();
 
@@ -36,7 +33,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> getProductsById(@PathVariable("id") int id) {
 
         Product product = this.productCRUDService.getById(id);
@@ -48,7 +45,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> getProductsByValue(@RequestParam("value") String value) {
         List<Product> foundProducts = productCRUDService.findByValue(value);
 
@@ -59,7 +56,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(foundProducts, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> saveProducts(@RequestBody Product product) {
         if (product == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -69,7 +66,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> updateProducts(@RequestBody Product product) {
         if (product == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -80,7 +77,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> deleteProducts(@PathVariable("id") int id) {
         Product product = this.productCRUDService.getById(id);
 
@@ -93,7 +90,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/createTwentyRandomProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/createTwentyRandomProducts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> createTwentyRandomProducts() {
         List<Product> createdProducts = this.productDataService.addTwentyRandomProducts();
         if (createdProducts.isEmpty()) {
@@ -102,7 +99,7 @@ public class ProductRestControllerV1 {
         return new ResponseEntity<>(createdProducts, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/updateProducts", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/updateProducts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> updateProductsByRetailer(@RequestParam("name") String retailerName) {
         Retailer retailer = retailerService.getByName(retailerName);
 

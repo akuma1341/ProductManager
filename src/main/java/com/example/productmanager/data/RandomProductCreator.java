@@ -5,6 +5,7 @@ import com.example.productmanager.services.RetailerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Random;
 
 @Component
@@ -12,10 +13,10 @@ public class RandomProductCreator implements ProductCreator{
     @Autowired
     private RetailerService retailerService;
 
-    private final int LEFT_LIMIT = 97; // letter 'a'
-    private final int RIGHT_LIMIT = 122; // letter 'z'
-    private final int NAME_LENGTH = 30;
-    private final int DESCRIPTION_LENGTH = 100;
+    private static final int LEFT_LIMIT = 97; // letter 'a'
+    private static final int RIGHT_LIMIT = 122; // letter 'z'
+    private static final int NAME_LENGTH = 30;
+    private static final int DESCRIPTION_LENGTH = 100;
 
     private final Random random = new Random();
 

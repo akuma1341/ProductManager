@@ -5,12 +5,15 @@ import com.example.productmanager.services.ProductCRUDService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
-@Service
-public class AddingNewProductsThread extends Thread {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddingNewProductsThread.class);
-    private final int pause = 300_000;
+@Configuration
+@EnableScheduling
+public class CreatingNewProductsSchedule {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreatingNewProductsSchedule.class);
+//    private final int pause = 300_000;
 
     @Autowired
     private ProductCreator productCreator;
@@ -18,19 +21,12 @@ public class AddingNewProductsThread extends Thread {
     @Autowired
     private ProductCRUDService productCRUDService;
 
-    @Override
-    public void run() {
-        while (true) {
+    @Scheduled(cron = "0 */5 * * * *")
+    public void createThreeNewProducts() {
             for (int i = 0; i < 3; i++) {
                 Product product = productCreator.createProduct();
                 productCRUDService.save(product);
                 LOGGER.info("Automatically created product: " + product);
             }
-            try {
-                Thread.sleep(pause);
-            } catch (InterruptedException e) {
-                LOGGER.error("AddingNewProductsTread interrupted:\n" + e.getMessage());
-            }
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.productmanager;
 
-import com.example.productmanager.data.AddingNewProductsThread;
 import com.example.productmanager.data.RetailersCreator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +13,9 @@ public class ProductManagerApplication {
 
         RetailersCreator retailersCreator = context.getBean(RetailersCreator.class);
         retailersCreator.createRetailersIfNeeded();
-
-        AddingNewProductsThread addingNewProductsThread = context.getBean(AddingNewProductsThread.class);
-        addingNewProductsThread.start();
+//
+//        AddingNewProductsThread addingNewProductsThread = context.getBean(AddingNewProductsThread.class);
+//        addingNewProductsThread.start();
     }
 
 }
